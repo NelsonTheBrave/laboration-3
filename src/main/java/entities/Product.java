@@ -8,7 +8,7 @@ public class Product {
     public Category category;
     public int rating;
     public final LocalDateTime manufactureDate;
-    LocalDateTime lastModifiedDate;
+    public LocalDateTime lastModifiedDate;
 
     public Product(int id, String name, Category category, int rating) {
         this.id = id;
@@ -16,10 +16,14 @@ public class Product {
         this.category = category;
         this.rating = rating;
         manufactureDate = LocalDateTime.now();
+        lastModifiedDate = manufactureDate;
     }
 
     public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public record ProductRecord(int id, String name, Category category, int rating, LocalDateTime manufactureDate, LocalDateTime lastModifiedDate) {
     }
 
 }
