@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Warehouse {
@@ -38,9 +39,14 @@ public class Warehouse {
         return products.stream().map(product -> new Product.ProductRecord(product.id, product.name, product.category, product.rating, product.manufactureDate, product.lastModifiedDate)).collect(Collectors.toList());
     }
 
-    public Product.ProductRecord getProductById(int id) {
-        return products.stream().filter(product -> product.id == id).map(product -> new Product.ProductRecord(product.id, product.name, product.category, product.rating, product.manufactureDate, product.lastModifiedDate)).findFirst().orElse(null);
+    public Optional<Product.ProductRecord> getProductById(int id) {
+        return products.stream()
+                .filter(product -> product.id == id)
+                .map(product -> new Product.ProductRecord(product.id, product.name, product.category, product.rating, product.manufactureDate, product.lastModifiedDate))
+                .findFirst();
     }
+
+
 
     public List<Product.ProductRecord> getProductsByCategory(Category category) {
         return products.stream().filter(product -> product.category == category).sorted(Comparator.comparing(p -> p.name)).map(product -> new Product.ProductRecord(product.id, product.name, product.category, product.rating, product.manufactureDate, product.lastModifiedDate)).collect(Collectors.toList());
@@ -55,6 +61,13 @@ public class Warehouse {
     }
 
     public static void main(String[] args) {
-
+        Warehouse warehouse = new Warehouse();
+        warehouse.addProduct("Apple", Category.FOOD, 5);
+        warehouse.addProduct("Banana", Category.FOOD, 2);
+        Optional<Product.ProductRecord> product = warehouse.getProductById(2);
+        product.ifPresentOrElse(
+                p -> System.out.println("Product found: " + p),
+                () -> System.out.println("Product not found")
+        );
     }
 }

@@ -83,6 +83,8 @@ public class WarehouseTest {
     void testGetProductById() {
 
         assertThat(warehouse.getProductById(2))
+                .isPresent()
+                .get()
                 .extracting("name", "category", "rating")
                 .contains("Banana", Category.FOOD, 2);
     }
